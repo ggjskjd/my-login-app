@@ -2,43 +2,188 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Instagram Login Clone</title>
+  <style>
+    /* Import Instagram-like font */
+    @import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Roboto:wght@400;500&display=swap');
+
+    /* Reset */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #fafafa;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      background: #fff;
+      border: 1px solid #dbdbdb;
+      width: 100%;
+      max-width: 350px;
+      padding: 40px 40px 20px;
+      text-align: center;
+      border-radius: 1px;
+    }
+
+    /* Instagram logo style */
+    .logo {
+      font-family: 'Grand Hotel', cursive;
+      font-size: 48px;
+      color: #262626;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+
+    /* Inputs */
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      background: #fafafa;
+      border: 1px solid #dbdbdb;
+      border-radius: 3px;
+      padding: 9px 8px;
+      font-size: 14px;
+      margin: 6px 0 12px;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #a8a8a8;
+      background: #fff;
+    }
+
+    /* Button */
+    button {
+      width: 100%;
+      background-color: #3897f0;
+      border: none;
+      border-radius: 3px;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 8px 0;
+      cursor: pointer;
+      margin-top: 8px;
+      user-select: none;
+      transition: background-color 0.2s ease;
+    }
+    button:hover {
+      background-color: #2d81d6;
+    }
+
+    /* Divider */
+    .divider {
+      margin: 22px 0 18px;
+      text-align: center;
+      position: relative;
+      font-weight: 600;
+      font-size: 13px;
+      color: #999;
+      user-select: none;
+    }
+    .divider::before,
+    .divider::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: #dbdbdb;
+    }
+    .divider::before {
+      left: 0;
+    }
+    .divider::after {
+      right: 0;
+    }
+
+    /* Forgot password link */
+    .forgot-password {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #00376b;
+      text-decoration: none;
+      margin-top: 12px;
+      user-select: none;
+      cursor: pointer;
+    }
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    /* Signup section */
+    .signup-container {
+      background: white;
+      border: 1px solid #dbdbdb;
+      margin-top: 10px;
+      padding: 20px 0;
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+      font-size: 14px;
+      border-radius: 1px;
+      user-select: none;
+    }
+    .signup-container a {
+      color: #3897f0;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .signup-container a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive fixes for iPhone */
+    @media (max-width: 375px) {
+      .container,
+      .signup-container {
+        width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Login</h1>
-  <form id="login-form">
-    <input type="text" name="username" placeholder="Enter username" required />
-    <input type="password" name="password" placeholder="Enter password" required />
-    <button type="submit">Login</button>
-  </form>
+  <main>
+    <section class="container" role="main" aria-labelledby="login-title">
+      <h1 id="login-title" class="logo" aria-label="Instagram">Instagram</h1>
+      <form id="login-form" novalidate>
+        <input type="text" name="username" placeholder="Phone number, username, or email" required autocomplete="username" />
+        <input type="password" name="password" placeholder="Password" required autocomplete="current-password" />
+        <button type="submit">Log In</button>
+      </form>
+      <div class="divider">OR</div>
+      <a href="#" class="forgot-password">Forgot password?</a>
+    </section>
+    <section class="signup-container">
+      Don't have an account? <a href="#">Sign up</a>
+    </section>
+  </main>
 
   <script>
-    document.getElementById('login-form').addEventListener('submit', async function (e) {
+    document.getElementById('login-form').addEventListener('submit', function(e) {
       e.preventDefault();
-      const form = e.target;
-      const formData = {
-        username: form.username.value,
-        password: form.password.value
-      };
-
-      try {
-        const response = await fetch('/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        });
-
-        if (response.ok) {
-          const result = await response.text();
-          alert('Login successful: ' + result);
-        } else {
-          const error = await response.text();
-          alert('Login failed: ' + error);
-        }
-      } catch (err) {
-        console.error('Error:', err);
-        alert('Network error. Please try again.');
+      const username = e.target.username.value.trim();
+      const password = e.target.password.value.trim();
+      if (!username || !password) {
+        alert('Please fill out both fields.');
+        return;
       }
+      alert(`Logging in as ${username}`);
+      // Here you can add your fetch to /api/login
     });
   </script>
 </body>
