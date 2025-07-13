@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'project')));
 
 app.post('/api/login', (req, res) => {
     console.log('Data received:', req.body);
