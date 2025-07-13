@@ -174,16 +174,37 @@
   </main>
 
   <script>
-    document.getElementById('login-form').addEventListener('submit', function(e) {
+    document.getElementById('login-form').addEventListener('submit', async function (e) {
       e.preventDefault();
-      const username = e.target.username.value.trim();
-      const password = e.target.password.value.trim();
-      if (!username || !password) {
+      const form = e.target;
+      const formData = {
+        username: form.username.value.trim(),
+        password: form.password.value.trim()
+      };
+
+      if (!formData.username || !formData.password) {
         alert('Please fill out both fields.');
         return;
       }
-      alert(`Logging in as ${username}`);
-      // Here you can add your fetch to /api/login
+
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          const result = await response.text();
+          alert('Login successful: ' + result);
+        } else {
+          const error = await response.text();
+          alert('Login failed: ' + error);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('Network error. Please try again.');
+      }
     });
   </script>
 </body>
